@@ -5,7 +5,7 @@ with open('config.txt') as f:
     TOKEN = f.readline()
 
 bot = telebot.TeleBot(TOKEN)
-telebot.apihelper.proxy = {'https': 'http://197.216.2.13:8080'}
+#telebot.apihelper.proxy = {'https': 'http://92.60.237.34:4550'}
 
 team_progress = dict()
 
