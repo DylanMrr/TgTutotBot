@@ -63,7 +63,7 @@ def check_answer(answer, id, id_tg):
     global team_finish
     global teams
     if quest.quest[team_progress[id]][quest.ANSWER] == answer:
-        if team_progress[id] == len(quest.quest) - 1:
+        if team_progress[id] == len(quest.quest) - 1:#s
             team_finish[id] = datetime.datetime.now()
             bot.send_message(id_tg, "Вы правы. Квест завершен, ожидайте результатов")
         else:
