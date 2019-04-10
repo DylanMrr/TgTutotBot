@@ -66,7 +66,7 @@ def check_answer(answer, id):
             team_finish[id] = datetime.datetime.now()
             bot.send_message(id, "Вы правы. Квест завершен, ожидайте результатов")
         else:
-            team_progress[id] += 1
+            team_progress[id] += 1#
             bot.send_message(id, "Вы правы. \nСледующий вопрос:\n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
     else:
         bot.send_message(id, "Неправильный ответ, \n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
