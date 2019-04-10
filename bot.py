@@ -51,26 +51,26 @@ def handle_text(message):
         if message.text.lower() == "start": # and team_progress[message.from_user.id] == 0:
             start_quest(message.from_user.id)
         else:
-            check_answer(message.text.lower(), teams[message.from_user.id])
+            check_answer(message.text.lower(), teams[message.from_user.id], message.from_user.id)
 
 
 def start_quest(bot_id):
     bot.send_message(bot_id, quest.quest[0][quest.QUESTION])
 
 
-def check_answer(answer, id):
+def check_answer(answer, id, id_tg):
     global team_progress
     global team_finish
     global teams
     if quest.quest[team_progress[id]][quest.ANSWER] == answer:
         if team_progress[id] == len(quest.quest):
             team_finish[id] = datetime.datetime.now()
-            bot.send_message(id, "Вы правы. Квест завершен, ожидайте результатов")
+            bot.send_message(id_tg, "Вы правы. Квест завершен, ожидайте результатов")
         else:
             team_progress[id] += 1#
-            bot.send_message(id, "Вы правы. \nСледующий вопрос:\n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
+            bot.send_message(id_tg, "Вы правы. \nСледующий вопрос:\n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
     else:
-        bot.send_message(id, "Неправильный ответ, \n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
+        bot.send_message(id_tg, "Неправильный ответ, \n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
 
 
 bot.polling(none_stop=True, interval=0)
