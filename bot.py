@@ -37,7 +37,7 @@ def handle_text(message):
     elif message.text.lower() == "getprogress":
         bot.send_message(message.from_user.id, team_progress)
     elif teams.get(message.from_user.id) is None:
-        if message.text.lower().startwith("id"):
+        if message.text.lower().startswith("id"):
             id = message.text.lower().split(":")[1]
             if not id.isdigit() and id.isdigit() is None:
                 bot.send_message(message.from_user.id, "Отправьте id своей команды")
