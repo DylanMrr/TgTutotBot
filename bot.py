@@ -55,7 +55,7 @@ def handle_text(message):
 def start_quest(bot_id):
     bot.send_message(bot_id, quest.quest[0][quest.QUESTION])
 
-
+#
 def check_answer(answer, id):
     global team_progress
     global team_finish
