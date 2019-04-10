@@ -44,7 +44,7 @@ def handle_text(message):
                 bot.send_message(message.from_user.id, "Отправьте id своей команды")
             else:
                 teams[message.from_user.id] = id
-                team_progress[id] = 0
+                team_progress[id] = 0#
         else:
             bot.send_message(message.from_user.id, "Отправьте id своей команды")
     else:
