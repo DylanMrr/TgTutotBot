@@ -62,13 +62,12 @@ def check_answer(answer, id, id_tg):
     global team_progress
     global team_finish
     global teams
-    if quest.quest[team_progress[id]][quest.ANSWER] == answer:
-        if team_progress[id] == len(quest.quest):
-            team_finish[id] = datetime.datetime.now()
-            bot.send_message(id_tg, "Вы правы. Квест завершен, ожидайте результатов")
-        else:
-            team_progress[id] += 1#
-            bot.send_message(id_tg, "Вы правы. \nСледующий вопрос:\n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
+    if team_progress[id] == len(quest.quest):
+        team_finish[id] = datetime.datetime.now()
+        bot.send_message(id_tg, "Вы правы. Квест завершен, ожидайте результатов")
+    elif quest.quest[team_progress[id]][quest.ANSWER] == answer:
+        team_progress[id] += 1#
+        bot.send_message(id_tg, "Вы правы. \nСледующий вопрос:\n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
     else:
         bot.send_message(id_tg, "Неправильный ответ, \n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
 
