@@ -81,7 +81,11 @@ def check_answer(answer, id, id_tg):
 
 def create_result():
     global team_finish
-    return json.dumps(team_finish)
+    s = ''
+    for team in team_finish:
+        s += "[{}]: {}".format(team, team_finish[team])
+    return s
+    #return json.dumps(team_finish)
 
 
 
