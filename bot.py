@@ -1,6 +1,7 @@
 import telebot
 import quest
 import datetime
+import json
 
 with open('config.txt') as f:
     TOKEN = f.readline()
@@ -18,7 +19,7 @@ teams = dict()
 # Обработчик команд '/start' и '/help'.
 @bot.message_handler(commands=['start'])
 def handle_start_help(message):
-    bot.send_message(message.from_user.id, """Привет, с помощью этого бота будет проходить квест на школе тьторов.
+    bot.send_message(message.from_user.id, """Привет, с помощью этого бота будет проходить квест на школе тьюторов.
     Когда квест начнется вы получите первоначальные иснтрукции для начала работы. А пока что отправьте id 
     свой команды в формате 'id:{номер команды}' без кавычек и скобок. Например, id:4. Удачи:)
     """)
@@ -37,7 +38,7 @@ def handle_text(message):
     elif message.text.lower() == "getprogress":
         bot.send_message(message.from_user.id, team_progress)
     elif message.text.lower() == 'getresult':
-        bot.send_message(message.from_user.id, team_finish)
+        bot.send_message(message.from_user.id, create_result())
     elif message.text.lower().startswith("id") or teams.get(message.from_user.id) is None:
         if teams.get(message.from_user.id) is None:
         #if message.text.lower().startswith("id"):
@@ -76,6 +77,12 @@ def check_answer(answer, id, id_tg):
             bot.send_message(id_tg, "Вы правы. Следующий вопрос: {}".format(quest.quest[team_progress[id]][quest.QUESTION]))
     else:
         bot.send_message(id_tg, "Неправильный ответ, {}".format(quest.quest[team_progress[id]][quest.QUESTION]))
+
+
+def create_result():
+    global team_finish
+    return json.dumps(team_finish)
+
 
 
 bot.polling(none_stop=True, interval=0)
