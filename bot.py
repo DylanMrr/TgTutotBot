@@ -72,7 +72,7 @@ def check_answer(answer, id, id_tg):
         if team_progress[id] == len(quest.quest) - 1:#s
             current_time = datetime.datetime.now()
             time_str = "{}:{}:{}".format(current_time.hour, current_time.minute, current_time.second)
-            team_finish[id] = time_str
+            team_finish[id] = time_str#
             bot.send_message(id_tg, "Вы правы. Квест завершен, ожидайте результатов")
         else:
             team_progress[id] += 1#
@@ -83,11 +83,11 @@ def check_answer(answer, id, id_tg):
 
 def create_result():
     global team_finish
-    s = ''
-    for team in team_finish:
-        s += "[{}]: {}".format(team, team_finish[team])
-    return s
-    #return json.dumps(team_finish)
+    #s = ''
+    #for team in team_finish:
+    #    s += "[{}]: {}".format(team, team_finish[team])
+    #return s
+    return json.dumps(team_finish)
 
 
 
