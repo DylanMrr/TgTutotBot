@@ -70,7 +70,9 @@ def check_answer(answer, id, id_tg):
     global teams
     if quest.quest[team_progress[id]][quest.ANSWER] == answer:
         if team_progress[id] == len(quest.quest) - 1:#s
-            team_finish[id] = datetime.strftime(datetime.datetime.now(), "%H:%M:%S")
+            current_time = datetime.datetime.now()
+            time_str = "{}:{}:{}".format(current_time.hour, current_time.minute, current_time.second)
+            team_finish[id] = time_str
             bot.send_message(id_tg, "Вы правы. Квест завершен, ожидайте результатов")
         else:
             team_progress[id] += 1#
