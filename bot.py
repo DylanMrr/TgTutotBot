@@ -18,8 +18,8 @@ teams = dict()
 # Обработчик команд '/start' и '/help'.
 @bot.message_handler(commands=['start'])
 def handle_start_help(message):
-    bot.send_message(message.from_user.id, """Привет, с помощью этого бота будет проходить квест на школе тьторов.\n
-    Когда квест начнется вы получите первоначальные иснтрукции для начала работы. А пока что отправьте id \n
+    bot.send_message(message.from_user.id, """Привет, с помощью этого бота будет проходить квест на школе тьторов.
+    Когда квест начнется вы получите первоначальные иснтрукции для начала работы. А пока что отправьте id 
     свой команды в формате 'id:{номер команды}' без кавычек и скобок. Например, id:4. Удачи:)
     """)
     #team_progress[message.from_user.id] = 0
@@ -36,15 +36,20 @@ def handle_text(message):
         teams = dict()
     elif message.text.lower() == "getprogress":
         bot.send_message(message.from_user.id, team_progress)
+    elif message.text.lower() == 'getresult':
+        bot.send_message(message.from_user.id, team_finish)
     elif message.text.lower().startswith("id") or teams.get(message.from_user.id) is None:
         if teams.get(message.from_user.id) is None:
         #if message.text.lower().startswith("id"):
-            id = message.text.lower().split(":")[1]
-            if not id.isdigit() and id.isdigit() is None:
+            try:
+                id = message.text.lower().split(":")[1]
+                if not id.isdigit() and id.isdigit() is None:
+                    bot.send_message(message.from_user.id, "Отправьте id своей команды")
+                else:
+                    teams[message.from_user.id] = id
+                    team_progress[id] = 0
+            except IndexError:
                 bot.send_message(message.from_user.id, "Отправьте id своей команды")
-            else:
-                teams[message.from_user.id] = id
-                team_progress[id] = 0
         else:
             bot.send_message(message.from_user.id, "Отправьте id своей команды")
     else:
@@ -68,9 +73,9 @@ def check_answer(answer, id, id_tg):
             bot.send_message(id_tg, "Вы правы. Квест завершен, ожидайте результатов")
         else:
             team_progress[id] += 1#
-            bot.send_message(id_tg, "Вы правы. \nСледующий вопрос:\n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
+            bot.send_message(id_tg, "Вы правы. Следующий вопрос: {}".format(quest.quest[team_progress[id]][quest.QUESTION]))
     else:
-        bot.send_message(id_tg, "Неправильный ответ, \n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
+        bot.send_message(id_tg, "Неправильный ответ, {}".format(quest.quest[team_progress[id]][quest.QUESTION]))
 
 
 bot.polling(none_stop=True, interval=0)
