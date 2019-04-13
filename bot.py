@@ -140,7 +140,8 @@ def write_team_progress():
 def write_finish():
     with open(TEAM_RESULT) as t:
         t.seek(0)
-        t.write(create_result())
+        res = create_result()
+        t.write(res)
 
 
 def start_quest(bot_id):
