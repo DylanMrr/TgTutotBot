@@ -35,14 +35,14 @@ def handle_text(message):
     receive_message = message.text.lower()
     if message.text.lower() == "newquestzero":
         new_quest_zero()
-    elif receive_message == "restart":
-        restart()
+    elif receive_message == "getfiles":
+        bot.send_message(telegram_id, restart())
     elif receive_message == "getprogress":
-        bot.send_message(telegram_id, get_progress_json())
+        bot.send_message(telegram_id, create_progress())
     elif receive_message == 'getresult':
-        bot.send_message(telegram_id, get_finish_json())
+        bot.send_message(telegram_id, create_result())
     elif receive_message == 'getteams':
-        bot.send_message(telegram_id, get_teams_json())
+        bot.send_message(telegram_id, create_teams())
     elif receive_message.startswith("id") or teams.get(telegram_id) is None:
         if teams.get(telegram_id) is None:
             try:
@@ -69,60 +69,31 @@ def new_quest_zero():
     global teams
     global team_finish
     global team_progress
-    try:
-        with open(TEAM_PROGRESS) as t1:
-            team_progress = json.loads(t1.read())
-    except:
-        team_progress = dict()
-    try:
-        with open(TEAM_RESULT) as t2:
-            team_finish = json.loads(t2.read())
-    except:
-        team_finish = dict()
-    try:
-        with open(TEAMS) as t3:
-            teams = json.loads(t3.read())
-    except:
-        teams = dict()
+    team_progress = dict()
+    team_finish = dict()
+    teams = dict()
 
 
 def get_finish_json():
     global team_finish
-    try:
-        with open(TEAM_RESULT) as t:
-            return t.read()
-    except:
-        return create_result()
+    with open(TEAM_RESULT) as t:
+        return t.read()
 
 
 def get_progress_json():
     global team_progress
-    try:
-        with open(TEAM_PROGRESS) as t:
-            return t.read()
-    except:
-        return create_progress()
+    with open(TEAM_PROGRESS) as t:
+        return t.read()
 
 
 def get_teams_json():
     global teams
-    try:
-        with open(TEAMS) as t:
-            return t.read()
-    except:
-        return create_teams()
+    with open(TEAMS) as t:
+        return t.read()
 
 
 def restart():
-    global teams
-    global team_finish
-    global team_progress
-    team_progress = dict()
-    team_finish = dict()
-    teams = dict()
-    write_finish()
-    write_team_progress()
-    write_teams()
+    return get_teams_json() + '\n' + get_progress_json() + '\n' + get_finish_json()
 
 
 def write_teams():
