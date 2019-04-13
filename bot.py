@@ -159,7 +159,7 @@ def check_answer(answer, id, id_tg):
             bot.send_message(id_tg, "Вы правы. Квест завершен, ожидайте результатов")
             write_finish()
         else:
-            team_progress[id] += 1#
+            team_progress[id] += 1
             bot.send_message(id_tg, "Вы правы. Следующий вопрос: \n\n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
             write_team_progress()
     else:
