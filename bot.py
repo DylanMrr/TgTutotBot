@@ -157,7 +157,7 @@ def check_answer(answer, id, id_tg):
             time_str = "{}:{}:{}".format(current_time.hour + 3, current_time.minute, current_time.second)
             team_finish[id] = time_str#
             bot.send_message(id_tg, "Вы правы. Квест завершен, ожидайте результатов")
-            write_finish()
+            write_finish()#
         else:
             team_progress[id] += 1#
             bot.send_message(id_tg, "Вы правы. Следующий вопрос: \n\n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
