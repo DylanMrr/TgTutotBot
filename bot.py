@@ -79,9 +79,9 @@ def check_answer(answer, id, id_tg):
             bot.send_message(id_tg, "Вы правы. Квест завершен, ожидайте результатов")
         else:
             team_progress[id] += 1#
-            bot.send_message(id_tg, "Вы правы. Следующий вопрос: {}".format(quest.quest[team_progress[id]][quest.QUESTION]))
+            bot.send_message(id_tg, "Вы правы. Следующий вопрос: \n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
     else:
-        bot.send_message(id_tg, "Неправильный ответ, {}".format(quest.quest[team_progress[id]][quest.QUESTION]))
+        bot.send_message(id_tg, "Неправильный ответ. \n\n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
 
 
 def create_result():
