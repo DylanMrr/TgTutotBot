@@ -35,8 +35,6 @@ def handle_text(message):
     receive_message = message.text.lower()
     if message.text.lower() == "newquestzero":
         new_quest_zero()
-    elif receive_message == "getfiles":
-        bot.send_message(telegram_id, restart())
     elif receive_message == "getprogress":
         bot.send_message(telegram_id, create_progress())
     elif receive_message == 'getresult':
@@ -51,9 +49,7 @@ def handle_text(message):
                     bot.send_message(telegram_id, "Отправьте id своей команды")
                 else:
                     teams[telegram_id] = id
-                    write_teams()
                     team_progress[id] = 0
-                    write_team_progress()
             except IndexError:
                 bot.send_message(telegram_id, "Отправьте id своей команды")
         else:
@@ -74,47 +70,6 @@ def new_quest_zero():
     teams = dict()
 
 
-def get_finish_json():
-    global team_finish
-    with open(TEAM_RESULT) as t:
-        return t.read()
-
-
-def get_progress_json():
-    global team_progress
-    with open(TEAM_PROGRESS) as t:
-        return t.read()
-
-
-def get_teams_json():
-    global teams
-    with open(TEAMS) as t:
-        return t.read()
-
-
-def restart():
-    return get_teams_json() + '\n' + get_progress_json() + '\n' + get_finish_json()
-
-
-def write_teams():
-    with open(TEAMS) as t:
-        t.seek(0)
-        t.write(create_teams())
-
-
-def write_team_progress():
-    with open(TEAM_PROGRESS) as t:
-        t.seek(0)
-        t.write(create_progress())
-
-
-def write_finish():
-    with open(TEAM_RESULT) as t:
-        t.seek(0)
-        res = create_result()
-        t.write(res)
-
-
 def start_quest(bot_id):
     bot.send_message(bot_id, quest.quest[0][quest.QUESTION])
 
@@ -129,11 +84,9 @@ def check_answer(answer, id, id_tg):
             time_str = "{}:{}:{}".format(current_time.hour + 3, current_time.minute, current_time.second)
             team_finish[id] = time_str#
             bot.send_message(id_tg, "Вы правы. Квест завершен, ожидайте результатов")
-            write_finish()
         else:
             team_progress[id] += 1
             bot.send_message(id_tg, "Вы правы. Следующий вопрос: \n\n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
-            write_team_progress()
     else:
         bot.send_message(id_tg, "Неправильный ответ. \n\n{}".format(quest.quest[team_progress[id]][quest.QUESTION]))
 
