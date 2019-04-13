@@ -7,8 +7,9 @@ with open('config.txt') as f:
     TOKEN = f.readline()
 
 bot = telebot.TeleBot(TOKEN)
-#telebot.apihelper.proxy = {'https': 'http://92.60.237.34:4550'}
-
+TEAM_PROGRESS = "team_progress.txt"
+TEAM_RESULT = "team_result.txt"
+TEAMS = "teams.txt"
 
 
 team_progress = dict()
@@ -19,11 +20,9 @@ teams = dict()
 # Обработчик команд '/start' и '/help'.
 @bot.message_handler(commands=['start'])
 def handle_start_help(message):
-    bot.send_message(message.from_user.id, """Привет, с помощью этого бота будет проходить квест на школе тьюторов.
-    Когда квест начнется вы получите первоначальные иснтрукции для начала работы. А пока что отправьте id 
-    свой команды в формате 'id:{номер команды}' без кавычек и скобок. Например, id:4. Удачи:)
-    """)
-    #team_progress[message.from_user.id] = 0
+    bot.send_message(message.from_user.id, """Привет, с помощью этого бота будет проходить квест на школе тьюторов.""" +
+    """Когда квест начнется вы получите первоначальные иснтрукции для начала работы. А пока что отправьте id """ +
+    """свой команды в формате 'id:{номер команды}' без кавычек и скобок. Например, id:4. Удачи:)""")
 
 
 @bot.message_handler(content_types=["text"])
@@ -31,35 +30,36 @@ def handle_text(message):
     global team_progress
     global team_finish
     global teams
+    telegram_id = message.from_user.id
     if message.text.lower() == "newquestzero":
         team_progress = dict()
         team_finish = dict()
         teams = dict()
     elif message.text.lower() == "getprogress":
-        bot.send_message(message.from_user.id, create_progress())
+        bot.send_message(telegram_id, create_progress())
     elif message.text.lower() == 'getresult':
-        bot.send_message(message.from_user.id, create_result())
+        bot.send_message(telegram_id, create_result())
     elif message.text.lower() == 'getteams':
-        bot.send_message(message.from_user.id, create_teams())
-    elif message.text.lower().startswith("id") or teams.get(message.from_user.id) is None:
-        if teams.get(message.from_user.id) is None:
+        bot.send_message(telegram_id, create_teams())
+    elif message.text.lower().startswith("id") or teams.get(telegram_id) is None:
+        if teams.get(telegram_id) is None:
         #if message.text.lower().startswith("id"):
             try:
                 id = message.text.lower().split(":")[1]
                 if not id.isdigit() and id.isdigit() is None:
-                    bot.send_message(message.from_user.id, "Отправьте id своей команды")
+                    bot.send_message(telegram_id, "Отправьте id своей команды")
                 else:
-                    teams[message.from_user.id] = id
+                    teams[telegram_id] = id
                     team_progress[id] = 0
             except IndexError:
-                bot.send_message(message.from_user.id, "Отправьте id своей команды")
+                bot.send_message(telegram_id, "Отправьте id своей команды")
         else:
-            bot.send_message(message.from_user.id, "Отправьте id своей команды")
+            bot.send_message(telegram_id, "Отправьте id своей команды")
     else:
         if message.text.lower() == "start": # and team_progress[message.from_user.id] == 0:
-            start_quest(message.from_user.id)
+            start_quest(telegram_id)
         else:
-            check_answer(message.text.lower(), teams[message.from_user.id], message.from_user.id)
+            check_answer(message.text.lower(), teams[telegram_id], telegram_id)
 
 
 def start_quest(bot_id):
